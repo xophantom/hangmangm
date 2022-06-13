@@ -1,92 +1,88 @@
-var rand = 0;
-var word = "";
-var numWrong = 0;
-var numRight = 0;
-var phraseLength = 0;
-var numChar = 0;
-var firsTime = true;
-var animais = ["Cachorro", "Elefante" , "Golfinho" , "Guaxinim" , "Hiena"];
-var frutas = ["Abacaxi", "Hortela", "Laranja", "Maracuja", "Kiwi"];
-var filmes = ["Titanic", "Star Wars", "Os Vingadores", "Velozes e Furiosos", "O Poderoso Chefao"];
+let rand = 0;
+let word = "";
+let numWrong = 0;
+let numRight = 0;
+let phraseLength = 0;
+let numChar = 0;
+let firstTime = true;
+let animais = ["Cachorro", "Elefante" , "Golfinho" , "Guaxinim" , "Hiena"];
+let frutas = ["Abacaxi", "Hortela", "Laranja", "Maracuja", "Kiwi"];
+let filmes = ["Titanic", "Star Wars", "Os Vingadores", "Velozes e Furiosos", "O Poderoso Chefao"];
+
+const elements = {
+    introPage: document.getElementById('introPage'),
+    configPage: document.getElementById('configPage'),
+    singlePage: document.getElementById('singlePage'),
+    rulesPage: document.getElementById('rulesPage'),
+    gamePage: document.getElementById('gamePage'),
+    rankingPage: document.getElementById('rankingPage'),
+    categoriaPage: document.getElementById('categoriaPage')
+}
+
+function hideElements(...elements) {
+    elements.forEach(element => {
+        element.style.display = "none";
+    })
+}
+
+function showElements(...elements) {
+    elements.forEach(element => {
+        element.style.display = "block";
+    })
+}
 
 function newGame(){
-	if(!firsTime){
-		firsTime = false;
-		document.getElementById('introPage').style.display = "none";
-        document.getElementById('configPage').style.display = "block";
-		document.getElementById('singlePage').style.display = "block";
-		document.getElementById('rulesPage').style.display = "none";
-		document.getElementById('gamePage').style.display = "none";	
+    const { introPage, configPage, singlePage, rulesPage, gamePage } = elements;
+
+	if (!firstTime) {
+		firstTime = false;
+        showElements(configPage, singlePage);
+        hideElements(introPage, rulesPage, gamePage);
 	} else{
-		firsTime = false;
+		firstTime = false;
 		draw();
 	}
 }
 
-function rp(){
-    document.getElementById('introPage').style.display = "none";
-    document.getElementById('rankingPage').style.display = "none";
-
-    document.getElementById('categoriaPage').style.display = "none";
-    document.getElementById('configPage').style.display = "none";
-    document.getElementById('singlePage').style.display = "none";
-    document.getElementById('rulesPage').style.display = "block";
-	document.getElementById('gamePage').style.display = "none";
+function showRulesPage(){
+    const { rulesPage } = elements;
+    hideElements(...Object.values(elements));
+    showElements(rulesPage);
 }
 
-function sp(){
-    document.getElementById('introPage').style.display = "none";
-    document.getElementById('categoriaPage').style.display = "none";
-    document.getElementById('rankingPage').style.display = "none";
+const rp = showRulesPage;
 
-    document.getElementById('configPage').style.display = "none";
-    document.getElementById('singlePage').style.display = "block";
-	document.getElementById('rulesPage').style.display = "none";
-	document.getElementById('gamePage').style.display = "none";
+function showSinglePage(){
+    const { singlePage } = elements;
+    hideElements(...Object.values(elements));
+    showElements(singlePage);
 }
+
+const sp = showSinglePage;
 
 function tp(){
-    document.getElementById('introPage').style.display = "block";
-    document.getElementById('categoriaPage').style.display = "none";
-    document.getElementById('rankingPage').style.display = "none";
-
-    document.getElementById('configPage').style.display = "block";
-    document.getElementById('singlePage').style.display = "none";
-	document.getElementById('rulesPage').style.display = "none";
-	document.getElementById('gamePage').style.display = "none";
+    const { introPage, configPage } = elements;
+    hideElements(...Object.values(elements));
+    showElements(introPage, configPage);
 }
 
 function fp(){
-    document.getElementById('introPage').style.display = "none";
-    document.getElementById('categoriaPage').style.display = "none";
-    document.getElementById('rankingPage').style.display = "none";
-
-    document.getElementById('configPage').style.display = "block";
-    document.getElementById('singlePage').style.display = "none";
-	document.getElementById('rulesPage').style.display = "none";
-	document.getElementById('gamePage').style.display = "none";
+    const { configPage } = elements;
+    hideElements(...Object.values(elements));
+    showElements(configPage);
 }
 
 function vp(){ //Function para ativar a acessibilidade
-    document.getElementById('introPage').style.display = "none";
-    document.getElementById('configPage').style.display = "none";
-    document.getElementById('singlePage').style.display = "block";
-	document.getElementById('rulesPage').style.display = "none";
-	document.getElementById('gamePage').style.display = "none";
-    document.getElementById('rankingPage').style.display = "none";
-
+    const { singlePage } = elements;
+    hideElements(...Object.values(elements));
+    showElements(singlePage);
 }
 
 function pp(){ //Function para ativar a acessibilidade
-    document.getElementById('introPage').style.display = "none";
-    document.getElementById('configPage').style.display = "none";
-    document.getElementById('singlePage').style.display = "none";
-	document.getElementById('rulesPage').style.display = "none";
-	document.getElementById('gamePage').style.display = "none";
-    document.getElementById('rankingPage').style.display = "block";
+    const { rankingPage } = elements;
+    hideElements(...Object.values(elements));
+    showElements(rankingPage);
 }
-
-
 
 function future(){
     rand = Math.floor(Math.random()*animais.length);
@@ -125,7 +121,7 @@ function prepositions(){ //adicionar categoria
 }
 
 function countChars(countfrom,displayto) {
-    var len = document.getElementById(countfrom).value.length;
+    let len = document.getElementById(countfrom).value.length;
     document.getElementById(displayto).innerHTML = len;
 }
 
@@ -135,16 +131,16 @@ function readText(){
 }
 
 function hangman(){
-    var x = word.length;
+    let x = word.length;
         if(x==0){
             alert("Por favor, insira algum texto.");
             return;
         }
-    var y = x-1;
-    var spaces = 0;
-    var validChar = new Array("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", " ", "?", "!", ",", ".", "-", "'");
+    let y = x-1;
+    let spaces = 0;
+    let validChar = new Array("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", " ", "?", "!", ",", ".", "-", "'");
     for(z = 0; z < word.length; z++){
-        var letter = word.substring(y,x);
+        let letter = word.substring(y,x);
         if(validChar.indexOf(letter) > -1){
             x--;
             y--;
@@ -158,7 +154,7 @@ function hangman(){
     y = x-1;
     while (x>0){
         numChar++;
-        var letter = word.substring(y,x);
+        let letter = word.substring(y,x);
         if(letter === " "){
             document.getElementById('letter'+x).innerHTML = "&nbsp;";
             document.getElementById('letter'+x).style.visibility = "hidden";
@@ -188,7 +184,7 @@ function hangman(){
 }
 
 function draw(){
-    var ctx = document.getElementById("hangman").getContext('2d');
+    let ctx = document.getElementById("hangman").getContext('2d');
         ctx.fillStyle = "white";
         ctx.lineWidth=3;
         ctx.fillRect(0, 0, 300, 300);
@@ -244,7 +240,7 @@ function draw(){
             ctx.moveTo(150,40);
             ctx.lineTo(150,80);
             ctx.stroke();
-    var cntx = document.getElementById("homeHangman").getContext('2d');
+    let cntx = document.getElementById("homeHangman").getContext('2d');
         cntx.fillStyle = "white";
         cntx.lineWidth=3;
         cntx.fillRect(0, 0, 300, 300);
@@ -303,8 +299,8 @@ function draw(){
 }
 
 function splitWords(){
-    var placeKeep = 0;
-    var countBack = 16;
+    let placeKeep = 0;
+    let countBack = 16;
     if(numChar > 15){
         while(countBack > 1){
             if(document.getElementById('letter16').innerHTML == "&nbsp;"){
@@ -336,13 +332,13 @@ function splitWords(){
 }
 
 function guessLetter(){
-    var correct = 0;
-    var target = event.target || event.srcElement;
+    let correct = 0;
+    let target = event.target || event.srcElement;
     target.style.visibility = "hidden";
-    var lower = target.id;
-    var upper = document.getElementById(lower).getAttribute('value');
-    var results = document.getElementById('results');
-    var ul1 = document.getElementById('underline1').offsetWidth;
+    let lower = target.id;
+    let upper = document.getElementById(lower).getAttribute('value');
+    let results = document.getElementById('results');
+    let ul1 = document.getElementById('underline1').offsetWidth;
     for(a = 1; a < 101; a++){
         if(document.getElementById('letter'+a).innerHTML === upper || document.getElementById('letter'+a).innerHTML === lower){
             document.getElementById('letter'+a).style.visibility = "visible";
@@ -392,9 +388,9 @@ function guessLetter(){
 }
 
 function win(){
-    var ul1 = document.getElementById('underline1').offsetWidth;
-    var again = document.getElementById('again');
-    var results = document.getElementById('results');
+    let ul1 = document.getElementById('underline1').offsetWidth;
+    let again = document.getElementById('again');
+    let results = document.getElementById('results');
         results.style.visibility = "visible";
         results.style.color = "black";
     if(numWrong > 6){
@@ -434,7 +430,7 @@ function win(){
 }
 
 function hang(){
-    var ctx = document.getElementById("hangman").getContext('2d');
+    let ctx = document.getElementById("hangman").getContext('2d');
     if(numWrong==1){
         ctx.beginPath(); //head
             ctx.arc(150, 100, 20, 0, 2*Math.PI);
@@ -900,9 +896,9 @@ function hang(){
 }
 
 function reset(){
-    var ul1 = document.getElementById('underline1').offsetWidth;
-    var results = document.getElementById('results');
-    var again = document.getElementById('again');
+    let ul1 = document.getElementById('underline1').offsetWidth;
+    let results = document.getElementById('results');
+    let again = document.getElementById('again');
     for(a = 1; a < 101; a++){
         document.getElementById('letter'+a).innerHTML = "&nbsp;";
         document.getElementById('underline'+a).style.width = ul1 + "px";
@@ -921,7 +917,7 @@ function reset(){
         document.getElementById('underline'+a).style.display = "none";
         document.getElementById('underline'+a).style.borderBottom = "0px";
     }
-    var bank = document.getElementById("letterBank").querySelectorAll("div");
+    let bank = document.getElementById("letterBank").querySelectorAll("div");
     for(b = 0; b < 26; b++){
         bank[b].style.visibility = "visible";
         /*cBank[b].style.visibility = "visible";*/
